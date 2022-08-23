@@ -68,9 +68,9 @@ public class RangesList {
                 Semver rangeSemver = range.getRangeVersion();
                 List<String> preRelease = rangeSemver.getPreRelease();
                 if (preRelease.size() > 0) {
-                    if (version.getMajor() == rangeSemver.getMajor() &&
-                            version.getMinor() == rangeSemver.getMinor() &&
-                            version.getPatch() == rangeSemver.getPatch()) {
+                    if (version.getMajor().equals( rangeSemver.getMajor()) &&
+                            version.getMinor() .equals( rangeSemver.getMinor()) &&
+                            version.getPatch() .equals( rangeSemver.getPatch())) {
                         return true;
                     }
                 }

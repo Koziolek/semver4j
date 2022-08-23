@@ -2,6 +2,7 @@ package org.semver4j.internal;
 
 import org.semver4j.Semver;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import static java.lang.Math.max;
@@ -74,8 +75,8 @@ public class Comparator implements Comparable<Semver> {
 
     private int compareIdentifiers(String a, String b) {
         try {
-            int aAsInt = Integer.parseInt(a);
-            int bAsInt = Integer.parseInt(b);
+            BigInteger aAsInt = new BigInteger(a);
+            BigInteger bAsInt = new BigInteger(b);
             return compareIdentifiers(aAsInt, bAsInt);
         } catch (NumberFormatException e) {
             //ignore
@@ -86,8 +87,8 @@ public class Comparator implements Comparable<Semver> {
             String[] tokenArr1 = a.split(digitsExtract);
             String[] tokenArr2 = b.split(digitsExtract);
             if (tokenArr1[0].equals(tokenArr2[0])) {
-                int digitA = Integer.parseInt(tokenArr1[1]);
-                int digitB = Integer.parseInt(tokenArr2[1]);
+                BigInteger digitA = new BigInteger(tokenArr1[1]);
+                BigInteger digitB = new BigInteger(tokenArr2[1]);
                 return compareIdentifiers(digitA, digitB);
             }
         }
@@ -101,8 +102,8 @@ public class Comparator implements Comparable<Semver> {
         return 0;
     }
 
-    private int compareIdentifiers(int a, int b) {
-        return Integer.compare(a, b);
+    private int compareIdentifiers(BigInteger a, BigInteger b) {
+        return a.compareTo(b);
     }
 
     private boolean isBothContainsDigits(String a, String b) {

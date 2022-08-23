@@ -2,6 +2,7 @@ package org.semver4j.internal;
 
 import org.semver4j.Semver;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -16,11 +17,11 @@ public class Modifier {
     }
 
     public Semver nextMajor() {
-        int nextMajor = version.getMajor();
+        BigInteger nextMajor = version.getMajor();
 
         // Prerelease version 1.0.0-5 bumps to 1.0.0
-        if (version.getMinor() != 0 || version.getPatch() != 0 || version.getPreRelease().isEmpty()) {
-            nextMajor = nextMajor + 1;
+        if (!version.getMinor().equals(BigInteger.ZERO) || !version.getPatch().equals(BigInteger.ZERO) || version.getPreRelease().isEmpty()) {
+            nextMajor = nextMajor.add(BigInteger.ONE);
         }
 
         String version = createFullVersion(format("%d.0.0", nextMajor), emptyList());
@@ -28,16 +29,19 @@ public class Modifier {
     }
 
     public Semver withIncMajor(int number) {
-        String version = createFullVersion(format("%d.%d.%d", (this.version.getMajor() + number), this.version.getMinor(), this.version.getPatch()), this.version.getPreRelease());
+        String version = createFullVersion(format("%d.%d.%d",
+                (this.version.getMajor().add(new BigInteger(number+""))),
+                this.version.getMinor()
+                , this.version.getPatch()), this.version.getPreRelease());
         return new Semver(version);
     }
 
     public Semver nextMinor() {
-        int nextMinor = version.getMinor();
+        BigInteger nextMinor = version.getMinor();
 
         // Prerelease version 1.2.0-5 bumps to 1.2.0
-        if (version.getPatch() != 0 || version.getPreRelease().isEmpty()) {
-            nextMinor = nextMinor + 1;
+        if (!version.getPatch().equals(BigInteger.ZERO) || version.getPreRelease().isEmpty()) {
+            nextMinor = nextMinor.add(BigInteger.ONE);
         }
 
         String version = createFullVersion(format("%d.%d.0", this.version.getMajor(), nextMinor), emptyList());
@@ -45,16 +49,19 @@ public class Modifier {
     }
 
     public Semver withIncMinor(int number) {
-        String version = createFullVersion(format("%d.%d.%d", this.version.getMajor(), (this.version.getMinor() + number), this.version.getPatch()), this.version.getPreRelease());
+        String version = createFullVersion(format("%d.%d.%d",
+                this.version.getMajor(),
+                (this.version.getMinor().add(new BigInteger(number + "")))
+                , this.version.getPatch()), this.version.getPreRelease());
         return new Semver(version);
     }
 
     public Semver nextPatch() {
-        int newPatch = version.getPatch();
+        BigInteger newPatch = version.getPatch();
 
         // Prerelease version 1.2.0-5 bumps to 1.2.0
         if (version.getPreRelease().isEmpty()) {
-            newPatch = newPatch + 1;
+            newPatch = newPatch.add(BigInteger.ONE);
         }
 
         String version = createFullVersion(format("%d.%d.%d", this.version.getMajor(), this.version.getMinor(), newPatch), emptyList());
@@ -62,7 +69,10 @@ public class Modifier {
     }
 
     public Semver withIncPatch(int number) {
-        String version = createFullVersion(format("%d.%d.%d", this.version.getMajor(), this.version.getMinor(), (this.version.getPatch() + number)), this.version.getPreRelease());
+        String version = createFullVersion(format("%d.%d.%d",
+                this.version.getMajor(), this.version.getMinor(),
+                (this.version.getPatch().add(new BigInteger(number + "")))),
+                this.version.getPreRelease());
         return new Semver(version);
     }
 
