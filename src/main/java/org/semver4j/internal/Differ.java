@@ -3,6 +3,8 @@ package org.semver4j.internal;
 import org.semver4j.Semver;
 import org.semver4j.Semver.VersionDiff;
 
+import java.util.Objects;
+
 import static org.semver4j.Semver.VersionDiff.*;
 
 public class Differ {
@@ -13,13 +15,13 @@ public class Differ {
     }
 
     public VersionDiff diff(Semver other) {
-        if (version.getMajor() != other.getMajor()) {
+        if (!version.getMajor().equals(other.getMajor())) {
             return MAJOR;
         }
-        if (version.getMinor() != other.getMinor()) {
+        if (!Objects.equals(version.getMinor(), other.getMinor())) {
             return MINOR;
         }
-        if (version.getPatch() != other.getPatch()) {
+        if (!Objects.equals(version.getPatch(), other.getPatch())) {
             return PATCH;
         }
         if (!version.getPreRelease().equals(other.getPreRelease())) {

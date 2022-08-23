@@ -4,6 +4,7 @@ import org.semver4j.internal.*;
 import org.semver4j.internal.StrictParser.Version;
 import org.semver4j.internal.range.RangesListFactory;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,9 +21,9 @@ public class Semver implements Comparable<Semver> {
     private final String version;
     private final SemverType type;
 
-    private final int major;
-    private final int minor;
-    private final int patch;
+    private final BigInteger major;
+    private final BigInteger minor;
+    private final BigInteger patch;
     private final List<String> preRelease;
     private final List<String> build;
 
@@ -97,7 +98,7 @@ public class Semver implements Comparable<Semver> {
      *
      * @return the major part of the version
      */
-    public int getMajor() {
+    public BigInteger getMajor() {
         return major;
     }
 
@@ -107,7 +108,7 @@ public class Semver implements Comparable<Semver> {
      *
      * @return the minor part of the version
      */
-    public int getMinor() {
+    public BigInteger getMinor() {
         return minor;
     }
 
@@ -117,7 +118,7 @@ public class Semver implements Comparable<Semver> {
      *
      * @return the patch part of the version
      */
-    public int getPatch() {
+    public BigInteger getPatch() {
         return patch;
     }
 
@@ -149,7 +150,7 @@ public class Semver implements Comparable<Semver> {
      * @return true if the current version is stable
      */
     public boolean isStable() {
-        return major > 0 && preRelease.isEmpty();
+        return major.compareTo(BigInteger.ZERO) > 0 && preRelease.isEmpty();
     }
 
     /**

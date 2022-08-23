@@ -2,6 +2,7 @@ package org.semver4j.internal;
 
 import org.semver4j.SemverException;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -25,9 +26,9 @@ public class StrictParser {
             throw new SemverException(format("Version [%s] is not valid semver.", version));
         }
 
-        int major = parseInt(matcher.group(1));
-        int minor = parseInt(matcher.group(2));
-        int patch = parseInt(matcher.group(3));
+        BigInteger major = new BigInteger(matcher.group(1));
+        BigInteger minor = new BigInteger(matcher.group(2));
+        BigInteger patch = new BigInteger(matcher.group(3));
         List<String> preRelease = convertToList(matcher.group(4));
         List<String> build = convertToList(matcher.group(5));
 
@@ -39,13 +40,13 @@ public class StrictParser {
     }
 
     public static class Version {
-        private final int major;
-        private final int minor;
-        private final int patch;
+        private final BigInteger major;
+        private final BigInteger minor;
+        private final BigInteger patch;
         private final List<String> preRelease;
         private final List<String> build;
 
-        Version(int major, int minor, int patch, List<String> preRelease, List<String> build) {
+        Version(BigInteger major, BigInteger minor, BigInteger patch, List<String> preRelease, List<String> build) {
             this.major = major;
             this.minor = minor;
             this.patch = patch;
@@ -53,19 +54,19 @@ public class StrictParser {
             this.build = build;
         }
 
-        Version(int major, int minor, int patch) {
+        Version(BigInteger major, BigInteger minor, BigInteger patch) {
             this(major, minor, patch, emptyList(), emptyList());
         }
 
-        public int getMajor() {
+        public BigInteger getMajor() {
             return major;
         }
 
-        public int getMinor() {
+        public BigInteger getMinor() {
             return minor;
         }
 
-        public int getPatch() {
+        public BigInteger getPatch() {
             return patch;
         }
 
@@ -88,7 +89,7 @@ public class StrictParser {
             }
 
             Version that = (Version) o;
-            return major == that.major &&
+            return Objects.equals(major, that.major) &&
                     Objects.equals(minor, that.minor) &&
                     Objects.equals(patch, that.patch) &&
                     Objects.equals(preRelease, that.preRelease) &&
