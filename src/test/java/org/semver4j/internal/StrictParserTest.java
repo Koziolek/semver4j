@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.semver4j.SemverException;
 import org.semver4j.internal.StrictParser.Version;
 
+import java.math.BigInteger;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
@@ -36,6 +37,8 @@ class StrictParserTest {
 				arguments("0.0.4", new Version(valueOf(0), valueOf(0), valueOf(4))),
 				arguments("1.2.3", new Version(valueOf(1), valueOf(2), valueOf(3))),
 				arguments("10.20.30", new Version(valueOf(10), valueOf(20), valueOf(30))),
+				arguments("99999999999999999999999.99999999999999999999999.99999999999999999999999",
+						new Version(new BigInteger("99999999999999999999999"), new BigInteger("99999999999999999999999"), new BigInteger("99999999999999999999999"))),
 				arguments("1.1.2-prerelease+meta", new Version(valueOf(1), valueOf(1), valueOf(2), singletonList("prerelease"), singletonList("meta"))),
 				arguments("1.1.2+meta", new Version(valueOf(1), valueOf(1), valueOf(2), emptyList(), singletonList("meta"))),
 				arguments("1.1.2+meta-valid", new Version(valueOf(1), valueOf(1), valueOf(2), emptyList(), singletonList("meta-valid"))),
