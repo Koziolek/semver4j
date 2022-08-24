@@ -1,7 +1,6 @@
 package org.semver4j;
 
 import org.semver4j.internal.*;
-import org.semver4j.internal.StrictParser.Version;
 import org.semver4j.internal.range.RangesListFactory;
 
 import java.util.List;
@@ -15,7 +14,6 @@ import static org.semver4j.Semver.SemverType.STRICT;
  * specification (see <a href="http://semver.org">semver.org</a>).
  */
 public class Semver implements Comparable<Semver> {
-    private static final StrictParser STRICT_PARSER = new StrictParser();
 
     private final String version;
     private final SemverType type;
@@ -34,7 +32,7 @@ public class Semver implements Comparable<Semver> {
         this.version = version.trim();
         this.type = type;
 
-        Version parsedVersion = STRICT_PARSER.parse(this.version);
+        Version parsedVersion = VersionParser.getImplementation(type).parse(this.version);
 
         major = parsedVersion.getMajor();
         minor = parsedVersion.getMinor();

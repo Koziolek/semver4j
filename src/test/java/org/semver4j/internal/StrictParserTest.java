@@ -4,7 +4,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.semver4j.SemverException;
-import org.semver4j.internal.StrictParser.Version;
 
 import java.util.stream.Stream;
 
